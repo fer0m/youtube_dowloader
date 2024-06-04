@@ -18,7 +18,7 @@
 <body>
 <div class="container">
     <div class="uk-card uk-card-default uk-card-body uk-animation-scale-up uk-transform-origin-top-center" align="center">
-        <form method="POST" >
+        <form method="POST" id="checkForm">
             {% csrf_token %}
             <div class=".uk-input">
                 <label class=".uk-text-bold">YouTube Link</label>
@@ -26,19 +26,62 @@
                     {% if field.errors %}
                         <div class="uk-alert-danger" uk-alert>
                             <a class="uk-alert-close" uk-close></a>
-                            <p>{{field.errors}}</p>
+                            <p>{{ field.errors }}</p>
                         </div>
                     {% endif %}
-                        <p>{{ field }}</p>
+                    <p>{{ field }}</p>
                 {% endfor %}
             </div>
-            <button name="downloadForm" type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" >Download</button>
+            <button name="downloadForm"
+                    type="submit"
+                    class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom">Download
+            </button>
             {% if form.is_valid %}
-                Name: "{{title}}" Expiration: {{expiration}} Resolution: {{resolution}} Filesize: {{filesize}}
+                <p>Name: "{{ title }}" Expiration: {{ expiration }} Resolution: {{ resolution }} Filesize: {{ filesize }}</p>
             {% endif %}
-            <button name="checkForm" type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" >Check you link</button>
+            <button name="checkForm" type="submit" class="uk-button uk-button-primary uk-width-1-1 uk-margin-small-bottom" onclick="spinner()">Check you link</button>
         </form>
+        <div class="uk-card loader">
+          <div class="loading">
+          </div>
+        </div>
     </div>
 </div>
 </body>
 </html>
+
+<script type="text/javascript">
+    function spinner() {
+        document.getElementsByClassName("loader")[0].style.display = "block";
+    }
+</script>
+
+<style>
+
+.loader {
+  display: none;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.loading {
+    border: 2px solid #ccc;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border-top-color: #1ecd97;
+    border-left-color: #1ecd97;
+    animation: spin 1s infinite ease-in;
+    margin-top: 50px;
+}
+
+@keyframes spin {
+    0% {
+        transform: rotate(0deg);
+    }
+    100% {
+        transform: rotate(360deg);
+    }
+}
+</style>
